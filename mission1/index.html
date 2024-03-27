@@ -8,7 +8,7 @@
     <main id="app"></main>
     <script>
       const app = document.querySelector('#app');
-      const data = [
+      const state = [
         {
           text: 'JS 공부하기',
           isCompleted: true,
@@ -42,12 +42,13 @@
       ];
 
       class List {
-        #data;
+        #state;
         #container;
-        constructor(app, data) {
-          this.#validate(data);
-          this.#data = data;
+        constructor(app, initalState) {
+          this.#validate(initalState);
+          this.#state = initalState;
           this.#container = app;
+          this.#render();
         }
 
         #validate(a) {
@@ -56,8 +57,14 @@
           if (!a.length || !a.every((ele) => ele.text && typeof ele.text === 'string')) throw new Error('데이터에 text가 없거나 text타입이 올바르지 않습니다.');
         }
 
-        render() {
-          this.#data.forEach(({ text, isCompleted }) => {
+        setState(nextData) {
+          this.#state = nextData;
+          this.#validate(this.#state);
+          this.#render();
+        }
+
+        #render() {
+          this.#state.forEach(({ text, isCompleted }) => {
             if (isCompleted) {
               const s = document.createElement('s');
               const p = document.createElement('p');
@@ -75,15 +82,22 @@
         }
       }
       try {
-        const todoList = new List(app, data);
+        const todoList = new List(app, state);
         const dinnerList = new List(app, dinner);
         const musicList = new List(app, music);
 
-        todoList.render();
-        dinnerList.render();
-        musicList.render();
+        musicList.setState([
+          {
+            text: '고백',
+            isCompleted: true,
+          },
+          {
+            text: 'I Love You',
+            isCompleted: false,
+          },
+        ]);
       } catch ({ message }) {
-        console.error(message);
+        alert(message);
       }
     </script>
   </body>
