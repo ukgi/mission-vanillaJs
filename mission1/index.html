@@ -1,0 +1,51 @@
+<html>
+  <head>
+    <title>Mission 1</title>
+    <meta charset="utf-8" />
+  </head>
+
+  <body>
+    <div id="todo-list"></div>
+    <script>
+      const data = [
+        {
+          text: 'JS 공부하기',
+        },
+        {
+          text: '알고리즘 공부하기',
+        },
+      ];
+
+      class TodoList {
+        #data;
+        #todos;
+        constructor(data) {
+          this.#validate(data);
+          this.#data = data;
+          this.#todos = document.getElementById('todo-list');
+        }
+
+        #validate(a) {
+          if (a === undefined || a === null) throw new Error('데이터가 존재하지 않습니다.');
+          if (!Array.isArray(a)) throw new Error('배열이 아닙니다.');
+          if (!a.length || !a.every((ele) => ele.text && typeof ele.text === 'string')) throw new Error('데이터에 text가 없거나 text타입이 올바르지 않습니다.');
+        }
+
+        render() {
+          this.#data.forEach(({ text }) => {
+            const p = document.createElement('p');
+            const textNode = document.createTextNode(text);
+            p.appendChild(textNode);
+            this.#todos.appendChild(p);
+          });
+        }
+      }
+      try {
+        const todoList = new TodoList(data);
+        todoList.render();
+      } catch ({ message }) {
+        console.error(message);
+      }
+    </script>
+  </body>
+</html>
