@@ -11,27 +11,33 @@
       const data = [
         {
           text: 'JS 공부하기',
+          isCompleted: true,
         },
         {
           text: '알고리즘 공부하기',
+          isCompleted: false,
         },
       ];
 
       const dinner = [
         {
           text: '스파게티',
+          isCompleted: true,
         },
         {
           text: '불고기',
+          isCompleted: true,
         },
       ];
 
       const music = [
         {
           text: 'subtitle',
+          isCompleted: true,
         },
         {
           text: 'pretender',
+          isCompleted: false,
         },
       ];
 
@@ -51,11 +57,20 @@
         }
 
         render() {
-          this.#data.forEach(({ text }) => {
-            const p = document.createElement('p');
-            const textNode = document.createTextNode(text);
-            p.appendChild(textNode);
-            this.#container.appendChild(p);
+          this.#data.forEach(({ text, isCompleted }) => {
+            if (isCompleted) {
+              const s = document.createElement('s');
+              const p = document.createElement('p');
+              const textNode = document.createTextNode(text);
+              p.appendChild(textNode);
+              s.appendChild(p);
+              this.#container.appendChild(s);
+            } else {
+              const p = document.createElement('p');
+              const textNode = document.createTextNode(text);
+              p.appendChild(textNode);
+              this.#container.appendChild(p);
+            }
           });
         }
       }
