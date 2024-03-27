@@ -5,8 +5,9 @@
   </head>
 
   <body>
-    <div id="todo-list"></div>
+    <main id="app"></main>
     <script>
+      const app = document.querySelector('#app');
       const data = [
         {
           text: 'JS 공부하기',
@@ -16,13 +17,31 @@
         },
       ];
 
-      class TodoList {
+      const dinner = [
+        {
+          text: '스파게티',
+        },
+        {
+          text: '불고기',
+        },
+      ];
+
+      const music = [
+        {
+          text: 'subtitle',
+        },
+        {
+          text: 'pretender',
+        },
+      ];
+
+      class List {
         #data;
-        #todos;
-        constructor(data) {
+        #container;
+        constructor(app, data) {
           this.#validate(data);
           this.#data = data;
-          this.#todos = document.getElementById('todo-list');
+          this.#container = app;
         }
 
         #validate(a) {
@@ -36,13 +55,18 @@
             const p = document.createElement('p');
             const textNode = document.createTextNode(text);
             p.appendChild(textNode);
-            this.#todos.appendChild(p);
+            this.#container.appendChild(p);
           });
         }
       }
       try {
-        const todoList = new TodoList(data);
+        const todoList = new List(app, data);
+        const dinnerList = new List(app, dinner);
+        const musicList = new List(app, music);
+
         todoList.render();
+        dinnerList.render();
+        musicList.render();
       } catch ({ message }) {
         console.error(message);
       }
