@@ -44,41 +44,30 @@
       class List {
         #state;
         #container;
+        #element;
         constructor(app, initalState) {
-          this.#validate(initalState);
           this.#state = initalState;
+          this.#validate();
           this.#container = app;
+          this.#element = document.createElement('div');
+          this.#container.appendChild(this.#element);
           this.#render();
         }
 
-        #validate(a) {
-          if (a === undefined || a === null) throw new Error('데이터가 존재하지 않습니다.');
-          if (!Array.isArray(a)) throw new Error('배열이 아닙니다.');
-          if (!a.length || !a.every((ele) => ele.text && typeof ele.text === 'string')) throw new Error('데이터에 text가 없거나 text타입이 올바르지 않습니다.');
+        #validate() {
+          if (this.#state === undefined || this.#state === null) throw new Error('데이터가 존재하지 않습니다.');
+          if (!Array.isArray(this.#state)) throw new Error('배열이 아닙니다.');
+          if (!this.#state.length || !this.#state.every((ele) => ele.text && typeof ele.text === 'string')) throw new Error('데이터에 text가 없거나 text타입이 올바르지 않습니다.');
         }
 
         setState(nextData) {
           this.#state = nextData;
-          this.#validate(this.#state);
+          this.#validate();
           this.#render();
         }
 
         #render() {
-          this.#state.forEach(({ text, isCompleted }) => {
-            if (isCompleted) {
-              const s = document.createElement('s');
-              const p = document.createElement('p');
-              const textNode = document.createTextNode(text);
-              p.appendChild(textNode);
-              s.appendChild(p);
-              this.#container.appendChild(s);
-            } else {
-              const p = document.createElement('p');
-              const textNode = document.createTextNode(text);
-              p.appendChild(textNode);
-              this.#container.appendChild(p);
-            }
-          });
+          this.#element.innerHTML = this.#state.map(({ text, isCompleted }) => `<div>${isCompleted ? `<s>${text}</s>` : text}</div>`).join('');
         }
       }
       try {
